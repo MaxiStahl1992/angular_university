@@ -11,14 +11,15 @@ import {catchError, delayWhen, map, retryWhen, shareReplay, tap} from 'rxjs/oper
 })
 export class HomeComponent implements OnInit {
 
+    beginnersCourses: Course[];
+    advancedCourses: Course[];
 
     constructor() {
 
     }
 
     ngOnInit() {
-
-
+        
 
     }
 
