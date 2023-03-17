@@ -17,12 +17,66 @@ I will become a stream if we subscribe to it. There is a observable contract, wh
 it doesn't error out OR completes. After an error or after completion no new values will be emitted. 
 We can unsubscribe from an observable, by firt decalring the observable to a variable and then unsubscribing from this variable after a condition is met. 
 (about.ts)
+(home.ts)
 (utils.ts)
 
 ## Operators
 
 ### Pipe
 Used to derive observables from existing observables. Allows us to chain multiple operators to create a new observable.
+(about.ts)
+(home.ts)
 
 ### Map
 Applies a given project function to each value emitted by the source Observable, and emits the resulting values as an Observable.
+(about.ts)
+(home.ts)
+
+### ShareReplay
+It will share the data for all others that use the data. The data will not be fetched multiple times. So instead of using multiple http requests for different methods using the same data we onlx need one with http request with shareReplay().
+(home.ts)
+
+### Tap
+Is used to produce side effects in observable chain. Whenever we want to update something outside the observable chain.
+I.e. we want to update a variable at the component level or issue a logging statement.
+(home.ts)
+
+### Of
+Let's us define all sorts of observables.
+I.e. of(1, 2, 3) defines an observable of 1, 2, 3.
+(about.ts)
+
+### Concat
+Concatenates multiple Observables together by sequentially emitting their values, one Observable after the other.
+(about.ts)
+
+### ConcatMap
+Projects each value to an observable which is merged in the output observable, in a serialized fashion waitung for each one to complete before merging the next.
+If we use it to concat i.e. http requests they will be executed sequentially. The secind request will only start when the first one has completed. This makes sure that we always save the correct values but takes longer to finish.
+Ahould be used if the order oft completing/starting the observable execution is important.
+(course-dialog.ts)
+
+### Filter
+Filter items emitted by the source Observable by only emitting those that satisfy a specified predicate.
+(course-dialog.ts)
+
+### Merge
+Creates an output Observable which concurrently emits all values from every given input observable. 
+It is used to perform asynchronous operations in parallel.
+(about.ts)
+
+### MergeMap
+Projects each source value to an Observable which is merged in the output Observable;
+Requests will be executed in parallel. 
+Should be used if we want to execute as fast as possible and the order of starting/completing observables is not important.
+(course-dialog.ts)
+
+### ExhaustMap
+Projects each source value to an observable which is merged in the output observable only if the previous projected observable
+has completed.
+I.e. if we have a save button and click it several times really fast, we will only trigger one save http request, because exhaustMap
+will only execute one request, if another one is triggered while the first one is still ongoing the second one will be ignored.
+(course-dialog.ts)
+
+### SwitchMap
+use case: searches

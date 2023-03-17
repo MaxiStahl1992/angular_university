@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { createHttpObservable } from '../common/util';
-import { interval, timer, Observable, noop } from 'rxjs';
+import { interval, timer, Observable, noop, of, concat, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -81,7 +81,10 @@ export class AboutComponent implements OnInit {
 
   } */
 
-  ngOnInit() {
+  /*
+    Map operator
+  */
+/*   ngOnInit() {
     //A promise differs from an observable because it is executed immediatley once it is defined. An observable will only trigger 
     //a request in response to subscription.
     //Here we create an observable that only then creates a promise when we subscribe to it.
@@ -101,6 +104,41 @@ export class AboutComponent implements OnInit {
       noop,
       () => console.log('completed')
     )
-  }
+  } */
+
+  /*  
+  Observable concatination
+  */
+  /* ngOnInit() {
+    //of defines all sorts of observables. Here we define an observable that emits 1,2,3 and then completes
+    const source1$ = of(1, 2, 3);
+    const source2$ = of(4, 5, 6);
+    const source3$ = of(7, 8, 9)
+
+    const result$ = concat(source1$, source2$, source3$);
+
+    result$.subscribe(val => console.log(val));
+  } */
+
+  /* 
+  Merge Observables
+  */
+/*  ngOnInit() {
+   const interval1$ = interval(1000);
+   const interval2$ = interval1$.pipe(map(val => 10 * val));
+
+   const result$ = merge(interval1$, interval2$);
+   
+   //result$.subscribe(console.log)
+ } */
+
+ /* 
+  unsubscribe from observable
+ */
+ ngOnInit() {
+   const http$ = createHttpObservable('/api/courses');
+   const sub = http$.subscribe(console.log);
+   setTimeout(() => sub.unsubscribe(), 0)
+ }
 
 }

@@ -7,8 +7,9 @@
 
         <mat-tab label="Beginners">
 
+            <!-- The async pipe subscribes to an observable. It also unsubscribes when finished. -->
             <courses-card-list
-                    [courses]="beginnersCourses">
+                    [courses]="beginnerCourses$ | async">
 
             </courses-card-list>
 
@@ -17,7 +18,7 @@
         <mat-tab label="Advanced">
 
             <courses-card-list
-                    [courses]="advancedCourses"
+                    [courses]="advancedCourses$ | async"
 
             ></courses-card-list>
 
