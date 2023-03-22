@@ -69,14 +69,15 @@ export class HomeComponent implements OnInit {
     advancedCourses$: Observable<Course[]>;
 
     ngOnInit() {
-        const http$ = createHttpObservable('/api/courses');
+        const http$ = createHttpObservable('http://localhost:9000/api/courses');
 
         const courses$: Observable<Course[]> = http$
             .pipe(
                 //Tap is used to do something outside the observable chain. Here we want to log something to the console
                 tap(() => console.log("Http Request executed")),
                 map(res => Object.values(res['payload'])),
-                shareReplay()
+                shareReplay(),
+                catchError(err => of([])),
             );
         
         this.beginnerCourses$ = courses$

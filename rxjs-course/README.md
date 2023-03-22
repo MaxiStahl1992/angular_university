@@ -79,4 +79,16 @@ will only execute one request, if another one is triggered while the first one i
 (course-dialog.ts)
 
 ### SwitchMap
+Projects each source value to an Observable which is merged in the output Observable, emitting values only from the most recently projected Observable.
 use case: searches
+(course.ts)
+
+### DebounceTime
+Emits a value from the source Observable only after a particular time span has passed without another source emission
+(course.ts)
+
+### catchError
+catchError has three strategies:
+    - Replace Error Handling: Catch the error and display an observable, which must be defined offline, so either in the code or an offline db
+    - Catch Error:
+    - Rethrow Error: 
