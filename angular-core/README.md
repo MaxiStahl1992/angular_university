@@ -17,3 +17,13 @@ Template variables can refer to:
     - A directive or component
     - A TemplateRef from ng-template
     - A web component
+
+### @Input
+Parent component inputs data into the child component.
+Syntax [name]="the input info" in parent component. @Input name: type in child component.
+
+### @Output
+Child component outputs data to the parent component. 
+Syntax (name)="method(event$)" in parent and @Output name = new EventEmitter<type>() in child. 
+
+### ngFor
