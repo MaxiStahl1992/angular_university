@@ -9,8 +9,7 @@ import { Course } from './model/course';
 })
 export class AppComponent {
 
-    coreCourse = COURSES[0];
-    rxjsCourse = COURSES[1];
+    courses = COURSES;
 
     onCourseSelected(course: Course) {
       console.log("app", course)
