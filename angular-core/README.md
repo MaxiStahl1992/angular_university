@@ -50,5 +50,64 @@ Syntax: *ngIf="condition; else refered ng Template name i.e. #reference"
 ### Elvis Operator
 ? -> says that a value can be undefined
 
-### add classes
+### add classes conditionally
 [class.classname_in_css]="condition"
+[ngClass] = "'classname'" // not conditional -> shouldn't be used like that
+[ngClass] = "['classname', 'classname2']" // not conditional
+[ngClass] = "function()"
+examples for a function: 
+    if(this.course.category === 'BEGINNER') {
+        return ['beginner'];
+        }
+    OR
+    return {'beginner': this.course.category === 'BEGINNER'}
+
+### ngStyle
+can be uses if we need to dynamically style parts of a component.
+example: 
+html: 
+    [ngStyle]="function()"
+ts: 
+    function() {
+        return {
+            'background-image': 'url(' + this.course.iconUrl + ')'
+        }
+    }
+
+### ngSwitch
+Cover multiple alternative cases. 
+Example: 
+    <div class="course-category" [ngSwitch]="course.category">
+        <div class="category" *ngSwitchCase="'BEGINNER'"> Beginner </div>
+        <div class="category" *ngSwitchCase="'INTERMEDIATE'"> Intermediate </div>
+        <div class="category" *ngSwitchCase="'ADVANCED'"> Advanced </div>
+        <div class="category" *ngSwitchDefault> All Levels </div>
+    </div>
+
+### ngContainer
+If there is no convenient place to add a structural directive (*ngIf, *ngFor, ngSwitch, ...) ther is no need to add
+a new div (extra DOM element). We can use ng-container, this allows us to add structural directives without adding
+a new DOM element and helps us keep the application more lightweight.
+
+### Pipes
+Date: {{ startDate | date: 'MMM/dd/yyyy'}}
+String: {{title | uppercase }} | lowercase | titlecase 
+Number: number: 3.3-5 3 places before and 3-5 spaces after the comma (will be rounded)
+        currency: 'EUR' default is USD
+        percent
+Slice: slice:0:2 shows indexes 0 and 1 everything starting at 2 is not shown (non inclusive)
+Json: array/map | json shows the data and is useful for debugging
+keyvalue: used to get all the values within an object example: 
+    <div *ngFor="let pair of course | keyvalue"> 
+        {{pair.key + ': ' + pair.value}}
+    </div>
+
+### ViewChild
+Is used to query the template for matching results.
+If it finds multiple matching results it will take the first one.
+Can be used for components and for plain html elements.
+Syntax example: 
+    - @ViewChild(templateClass) variableName: templateClass; gets the component instance
+    - @ViewChild('templateReference', {read: ElementRef}) variableName: ElementRef; gets a reference to the html Element not the component
+    - @ViewChild('templateReference') variableName: templateClass; a template refeerence is marked as #templateReference in the template
+    - @ViewChiild('templateReference') variableName: ElementRef; i.e. an html element could be a div or p tag
