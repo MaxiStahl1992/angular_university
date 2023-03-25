@@ -3,8 +3,9 @@
          src="https://angular-academy.s3.amazonaws.com/main-logo/main-page-logo-small-hat.png">
 </div>
 
+<button (click)="onCoursesEdited()">Edit Courses</button>
 
-<div class="courses">
+<div class="courses" *ngIf="courses[0] as course">
 
     <!-- <course-card 
         *ngFor="let course of courses | slice:0:6; index as i" 
@@ -14,9 +15,11 @@
     </course-card> -->
 
     <course-card 
-        #cardRef
         (courseSelected)="onCourseSelected($event)" 
-        [course]="courses[0]">
+        [course]="course">
+        <course-image [src]="course.iconUrl"></course-image> 
+        <course-image [src]="courses[1].iconUrl"></course-image>  
+        <course-image [src]="courses[2].iconUrl"></course-image>       
     </course-card>
 
 </div>

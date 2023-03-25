@@ -18,14 +18,43 @@ Template variables can refer to:
     - A TemplateRef from ng-template
     - A web component
 
+### Elvis Operator
+? -> says that a value can be undefined
+
+## TS Decorators
 ### @Input
 Parent component inputs data into the child component.
 Syntax [name]="the input info" in parent component. @Input name: type in child component.
+in the child component I can rename the reference by @Input('src') name: type, if for example I want to name it image but need to access the src attribute in the parent to get the image url information.
 
 ### @Output
 Child component outputs data to the parent component. 
 Syntax (name)="method(event$)" in parent and @Output name = new EventEmitter<type>() in child. 
 
+### ViewChild
+Is used to query the template for matching results.
+If it finds multiple matching results it will take the first one.
+Can be used for components and for plain html elements.
+Syntax example: 
+    - @ViewChild(templateClass) variableName: templateClass; gets the component instance
+    - @ViewChild('templateReference', {read: ElementRef}) variableName: ElementRef; gets a reference to the html Element not the component
+    - @ViewChild('templateReference') variableName: templateClass; a template refeerence is marked as #templateReference in the template
+    - @ViewChiild('templateReference') variableName: ElementRef; i.e. an html element could be a div or p tag
+
+### ViewChildren
+Querys the template for all matching children. 
+It returns a QueryList. 
+The Query list is similar to an array and offers most of the features an array offers like: first, last, forEach and map.
+We can also use an Observable changes.
+
+### ContentChild
+Works similar to viewChild but is used in the context of content projection. 
+It only sees what is within the content of the component (in parent), view child doesn't see that. However content child will not see what is within the template, whereas viewChild will see that. 
+
+### ContentChildren
+Works similar to viewChildren. The differences are the same as between viewChild and contentChild.
+
+## HTML Methods
 ### *
 Shorthand syntax for structural directives.
 Allows us to change the structure of a page.
@@ -46,9 +75,6 @@ Syntax: *ngIf="condition"
 An else can be added to display a component it the else case
 Syntax: *ngIf="condition; else refered ng Template name i.e. #reference"
 `<ng-template #reference>some input</ng-template>`
-
-### Elvis Operator
-? -> says that a value can be undefined
 
 ### add classes conditionally
 [class.classname_in_css]="condition"
@@ -84,7 +110,7 @@ Example:
         <div class="category" *ngSwitchDefault> All Levels </div>
     </div>
 
-### ngContainer
+### ng-container
 If there is no convenient place to add a structural directive (*ngIf, *ngFor, ngSwitch, ...) ther is no need to add
 a new div (extra DOM element). We can use ng-container, this allows us to add structural directives without adding
 a new DOM element and helps us keep the application more lightweight.
@@ -102,12 +128,16 @@ keyvalue: used to get all the values within an object example:
         {{pair.key + ': ' + pair.value}}
     </div>
 
-### ViewChild
-Is used to query the template for matching results.
-If it finds multiple matching results it will take the first one.
-Can be used for components and for plain html elements.
-Syntax example: 
-    - @ViewChild(templateClass) variableName: templateClass; gets the component instance
-    - @ViewChild('templateReference', {read: ElementRef}) variableName: ElementRef; gets a reference to the html Element not the component
-    - @ViewChild('templateReference') variableName: templateClass; a template refeerence is marked as #templateReference in the template
-    - @ViewChiild('templateReference') variableName: ElementRef; i.e. an html element could be a div or p tag
+### ng-content
+If we add something in the component body in the parent element the input will be projected wherever we have put the ng-content tag in the component itself. 
+With the select="" we can choose which parts we want to show. Inside the select we will put css classes. i.e select=".courses" or select="img"
+
+## Lifecycle Hooks
+
+### AfterViewInit
+It is called after angular has fully initialized a components view. It handles any additional initialization tasks. 
+Corresponds to viewChild mehtods. Earliest moment we can be sure all views have been initialized.
+
+### AfterContentInit
+It is called after angular has fully initialized all content of a directive. Handles additional initialization tasks.
+Corresponds to contentChild methods. Earliest moment we can be sure that all content has been initialized.
