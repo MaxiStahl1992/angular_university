@@ -90,5 +90,10 @@ Emits a value from the source Observable only after a particular time span has p
 ### catchError
 catchError has three strategies:
     - Replace Error Handling: Catch the error and display an observable, which must be defined offline, so either in the code or an offline db
-    - Catch Error:
-    - Rethrow Error: 
+    - Catch Error: catches the error and log it to the console. instead of returning an observable we use throwError(err) as a pseudo observable that never emits. end with finalize(() => {}) to clean up. 
+    - Retry Error: catches an error and then waits for a specified amount of time before it will retry the request to the backend. retryWhen()
+(home.ts)
+
+### startWith
+its goal is to initialize a stream with a given value. I.e. for our search method we want to first search for an empty string, the start with operator allows us to set the initial value to an empty string and removes the necessity of concating the inital lessons and lessons stream. 
+(course.ts)

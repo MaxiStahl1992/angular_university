@@ -14,12 +14,18 @@ export function createHttpObservable(url: string) {
 
         fetch(url, {signal})
             .then(response => {
-                return response.json();
+                if(response.ok) {
+                    return response.json();
+                }
+                else {
+                    observer.error('Request failed with status code: ' + response.status);    
+                }
             })
             .then(body => {
                 observer.next(body);
                 observer.complete();
             })
+            //catch block only errors out in case of a fatal error (an error which the browser cannot recover from)
             .catch(err => {
                 observer.error(err);
             })
