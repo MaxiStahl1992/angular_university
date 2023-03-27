@@ -11,9 +11,9 @@ import {
     concatMap,
     switchMap,
     withLatestFrom,
-    concatAll, shareReplay
+    concatAll, shareReplay, throttle, throttleTime
 } from 'rxjs/operators';
-import {merge, fromEvent, Observable, concat} from 'rxjs';
+import {merge, fromEvent, Observable, concat, interval} from 'rxjs';
 import {Lesson} from '../model/lesson';
 import { createHttpObservable } from '../common/util';
 
@@ -60,14 +60,24 @@ export class CourseComponent implements OnInit, AfterViewInit {
         this.lessons$ = concat(initialLessons$, searchLessons$); */
 
         //search lessons with startWith method
-        this.lessons$ = fromEvent<any>(this.input.nativeElement, 'keyup')
+        /* this.lessons$ = fromEvent<any>(this.input.nativeElement, 'keyup')
                 .pipe(
                     map(event => event.target.value),
                     startWith(''),
                     debounceTime(400),
                     distinctUntilChanged(),
                     switchMap(search => this.loadLessons(search))
+                ) */
+        
+        //throttling -> doesn't make sense for typing observables 
+        fromEvent<any>(this.input.nativeElement, 'keyup')
+                .pipe(
+                    map(event => event.target.value),
+                    //same as ThrottleTime
+                    //throttle(() => interval(500))
+                    throttleTime(500)
                 )
+                .subscribe(console.log)
 
     }
 

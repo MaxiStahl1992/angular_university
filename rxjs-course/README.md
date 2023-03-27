@@ -84,7 +84,8 @@ use case: searches
 (course.ts)
 
 ### DebounceTime
-Emits a value from the source Observable only after a particular time span has passed without another source emission
+Emits a value from the source Observable only after a particular time span has passed without another source emission.
+This means that the value has to be stable for a certain amount of time.
 (course.ts)
 
 ### catchError
@@ -96,4 +97,10 @@ catchError has three strategies:
 
 ### startWith
 its goal is to initialize a stream with a given value. I.e. for our search method we want to first search for an empty string, the start with operator allows us to set the initial value to an empty string and removes the necessity of concating the inital lessons and lessons stream. 
+(course.ts)
+
+
+### throttle
+Emits a value from the source Observable, then ignores subsequent source values for a duration determined by another Observable, then repeats this process.
+I.e. We receive info about the changing values of currencies every 5 seconds, but for the frontend it is enough to update the value every minute. 
 (course.ts)
