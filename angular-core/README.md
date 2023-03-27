@@ -54,6 +54,8 @@ It only sees what is within the content of the component (in parent), view child
 ### ContentChildren
 Works similar to viewChildren. The differences are the same as between viewChild and contentChild.
 
+### ngTemplate
+
 ## HTML Methods
 ### *
 Shorthand syntax for structural directives.
@@ -131,6 +133,32 @@ keyvalue: used to get all the values within an object example:
 ### ng-content
 If we add something in the component body in the parent element the input will be projected wherever we have put the ng-content tag in the component itself. 
 With the select="" we can choose which parts we want to show. Inside the select we will put css classes. i.e select=".courses" or select="img"
+
+### ng-template
+Allows us to define blocks of html that correspond to a single isolated template.
+It will not be displayed by default, we have to explicitly use it somewhere to be displayed.
+A template can be instantiated in one component and other components can use it via input.
+Variables can be defined by: let-variable="ngTemplateOutletContext" i.e let-variable="description"
+<ng-template #templateExample>template</ng-template>
+<div *ngIf="expression; else templateExample">test</div>
+
+We can use ng-template as an input to a child. 
+i.e. 
+In Parent:
+<ng-template #templateExample let-templateVariable="variableName">
+<child-component [templateName]="templateExample"></child-component>
+In Child:
+TS
+`@Input() templateName: TemplateRef<any>`
+HTML
+<ng-content *ngIf="expression; else tempName"></ng-content>
+<ng-template #tempName>
+    <ng-container *ngTemplateOutlet="templateName; context: {variableName: data.variable}"></ng-container>
+</ng-template>
+
+#### *ngTemplateOutlet
+Use a template somewhere and give it input variables via context.
+<ng-container *ngTemplateOutlet="templateExample; context: {name: data.input} //i.e. {description: course.description}"></ng-container>
 
 ## Lifecycle Hooks
 

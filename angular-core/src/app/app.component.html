@@ -13,10 +13,15 @@
         [course]="course"
         [cardIndex]="i+1">
     </course-card> -->
+    <ng-template #blankImage let-courseName="description">
+        <p class="warn">{{courseName}} has no image yet.</p>
+        <img src="/assets/empty-image.png">
+    </ng-template>
 
     <course-card 
         (courseSelected)="onCourseSelected($event)" 
-        [course]="course">
+        [course]="course"
+        [noImageTemplate]="blankImage">
         <course-image [src]="course.iconUrl"></course-image> 
         <course-image [src]="courses[1].iconUrl"></course-image>  
         <course-image [src]="courses[2].iconUrl"></course-image>       
