@@ -169,3 +169,48 @@ Corresponds to viewChild mehtods. Earliest moment we can be sure all views have 
 ### AfterContentInit
 It is called after angular has fully initialized all content of a directive. Handles additional initialization tasks.
 Corresponds to contentChild methods. Earliest moment we can be sure that all content has been initialized.
+
+### Attribute Directive
+Create custom directive by 
+`ng g directive ...`
+To use a custom attribute directive call its selector in the html tag i.e. :
+directive-selector [highlighted]
+<custom-card highlighted></custom-card>
+
+#### Add a css class in a directive
+@HostBinding('className') -> specifies that we want to add a className to the host element (in this case custom-card)
+get cssClasses() {
+    return 'highlighted'
+}  -> Typescript getter Method to enable the host to receive the return value of the function. In this case the className as a string calles highlighted
+
+Special shorthand to add css classes:
+@HostBinding('class.highlighted')
+  get cssClasses() {
+    return true;
+  }
+
+The name of the property we are binding to needs to be a known DOM property.
+
+#### Binding to a directive
+<coustom-card [highlighted]="true"></custom-card>
+in driective
+@Input('highlighted')
+isHighlighted = false;
+
+@HostBinding('class.highlighted)
+get cssClass() {
+    return this.isHighlighted
+}
+
+We can use an expression instead of a value in the card to choose dynamically when to add the directive.
+
+#### Other directives
+@HostBinding('style.border')
+  get cssClasses() {
+    return "1px solid black";
+  }
+
+ @HostBinding('attr.disabled')
+  get disabled() {
+    return 'true'
+  }

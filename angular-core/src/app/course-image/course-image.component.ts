@@ -10,11 +10,10 @@ export class CourseImageComponent implements OnInit {
   @Input('src')
   imageUrl:string;
 
-
-
   constructor() { }
 
   ngOnInit() {
+    console.log(this.imageUrl)
   }
 
 }
