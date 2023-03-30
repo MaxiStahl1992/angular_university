@@ -104,3 +104,9 @@ its goal is to initialize a stream with a given value. I.e. for our search metho
 Emits a value from the source Observable, then ignores subsequent source values for a duration determined by another Observable, then repeats this process.
 I.e. We receive info about the changing values of currencies every 5 seconds, but for the frontend it is enough to update the value every minute. 
 (course.ts)
+
+### custom rxjs operator
+
+#### Debug
+To implement our own debug function to use in observables, we need to define a Higher Order Function (HOF). A HOF is a function that returns a function i.e. const xyz = (a, b) => (obersvable: Observable<any>) => source.pipe();
+(debug.ts)
