@@ -113,7 +113,7 @@ Example:
     </div>
 
 ### ng-container
-If there is no convenient place to add a structural directive (*ngIf, *ngFor, ngSwitch, ...) ther is no need to add
+If there is no convenient place to add a structural directive (*ngIf, *ngFor, ngSwitch, ...) there is no need to add
 a new div (extra DOM element). We can use ng-container, this allows us to add structural directives without adding
 a new DOM element and helps us keep the application more lightweight.
 
@@ -214,3 +214,71 @@ We can use an expression instead of a value in the card to choose dynamically wh
   get disabled() {
     return 'true'
   }
+
+#### Listening to events in directive
+We cannot only bind to directives we can also listen.
+I.e. if we want to know when the cursor hovers over the card we can listen to mouseover and mouseleave: 
+The ['$event'] allows us to listen to every mousemove in the element. in this case its not necessary and is just an example
+@HostListener('mouseover', ['$event'])
+  mouseOver($event) {
+    console.log($event)
+    this.isHighlighted = true; 
+  }
+
+  @HostListener('mouseleave')
+  mouseLeave() {
+    this.isHighlighted = false
+  }
+
+#### Custom Events in directives
+With the Output property we can also emit events out of the directive like so in the example of toggeling a console log satement from false to true and vice versa:
+directive: 
+@Output()
+  toggleHighlight = new EventEmitter();
+
+@HostListener('mouseover', ['$event'])
+  mouseOver($event) {
+    console.log($event)
+    this.isHighlighted = true;
+    this.toggleHighlight.emit(this.isHighlighted);
+  }
+
+  @HostListener('mouseleave')
+  mouseLeave() {
+    this.isHighlighted = false
+    this.toggleHighlight.emit(this.isHighlighted);
+  }
+
+component.html: 
+<component [highlighted]="false" (toggleHighlight)="onToggle($event)"></component>
+component.ts: 
+onToggle(isHighlighted: boolean) {
+      console.log(isHighlighted)
+    } 
+
+
+#### Exporting Directives
+add export as to directive decorators
+@Directive({
+  selector: '[highlighted]',
+  exportAs: 'hgl'
+})
+
+add a method to directive like 
+toggle() {
+    this.isHighlighted = !this.isHighlighted;
+    this.toggleHighlight.emit(this.isHighlighted);
+  }
+
+in component html
+<component #highlighter="hgl" highlighted> 
+    <p (dblclick)="highlighter.toggle()">test</p>
+</component>
+
+or in component ts
+@ViewChild(HighlightedDirective)
+    highlighted: HighlightedDirective
+
+and then we can use the directive in any method. 
+
+### Structural Directives
