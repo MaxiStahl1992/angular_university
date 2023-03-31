@@ -105,8 +105,15 @@ Emits a value from the source Observable, then ignores subsequent source values 
 I.e. We receive info about the changing values of currencies every 5 seconds, but for the frontend it is enough to update the value every minute. 
 (course.ts)
 
+### forkJoin
+When all observables complete, emit the lasgt value from each. If an inner observable does not complete, forkJoin will never emit a value.
+This operator is best used when you have a group of observables but only care about the final emitted value of each.
+
 ### custom rxjs operator
 
 #### Debug
 To implement our own debug function to use in observables, we need to define a Higher Order Function (HOF). A HOF is a function that returns a function i.e. const xyz = (a, b) => (obersvable: Observable<any>) => source.pipe();
 (debug.ts)
+
+## Store Observable Pattern
+

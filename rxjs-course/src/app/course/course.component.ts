@@ -13,7 +13,7 @@ import {
     withLatestFrom,
     concatAll, shareReplay, throttle, throttleTime
 } from 'rxjs/operators';
-import {merge, fromEvent, Observable, concat, interval} from 'rxjs';
+import {merge, fromEvent, Observable, concat, interval, forkJoin} from 'rxjs';
 import {Lesson} from '../model/lesson';
 import { createHttpObservable } from '../common/util';
 import { debug, RxJsLoggingLevel, setRxJsLoggingLevel } from '../common/debug';
@@ -41,12 +41,18 @@ export class CourseComponent implements OnInit, AfterViewInit {
     ngOnInit() {
 
         this.courseId = this.route.snapshot.params['id'];
-        this.course$ = createHttpObservable(`http://localhost:9000/api/courses/${this.courseId}`)
+        /* this.course$ = createHttpObservable(`http://localhost:9000/api/courses/${this.courseId}`)
             .pipe(
                 debug( RxJsLoggingLevel.INFO, "course value "),
-            );
+            ); */
         
         setRxJsLoggingLevel(RxJsLoggingLevel.TRACE);
+        
+        const course$ = createHttpObservable(`http://localhost:9000/api/courses/${this.courseId}`)
+        const lessons$ = this.loadLessons();
+
+        forkJoin({course$, lessons$})
+            .subscribe(val => console.log(val));
 
     }
 
@@ -66,7 +72,7 @@ export class CourseComponent implements OnInit, AfterViewInit {
         this.lessons$ = concat(initialLessons$, searchLessons$); */
 
         //search lessons with startWith method
-        this.lessons$ = fromEvent<any>(this.input.nativeElement, 'keyup')
+        /* this.lessons$ = fromEvent<any>(this.input.nativeElement, 'keyup')
                 .pipe(
                     map(event => event.target.value),
                     startWith(''),
@@ -75,17 +81,17 @@ export class CourseComponent implements OnInit, AfterViewInit {
                     distinctUntilChanged(),
                     switchMap(search => this.loadLessons(search)),
                     debug(RxJsLoggingLevel.DEBUG, "lessons value "),
-                )
+                ) */
         
         //throttling -> doesn't make sense for typing observables 
-/*         fromEvent<any>(this.input.nativeElement, 'keyup')
+        fromEvent<any>(this.input.nativeElement, 'keyup')
                 .pipe(
                     map(event => event.target.value),
                     //same as ThrottleTime
                     //throttle(() => interval(500))
                     throttleTime(500)
                 )
-                .subscribe(console.log) */
+                .subscribe(console.log)
 
     }
 
